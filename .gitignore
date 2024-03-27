@@ -1,3 +1,6 @@
+# ignore specific files
+sma_modbus_2mariaDB.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
