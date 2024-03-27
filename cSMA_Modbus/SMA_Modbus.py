@@ -74,12 +74,6 @@ class SMA_Modbus:
             data = [decoder.decode_32bit_int() for i in range(count)]
         return data
 
-    def decode_looping(self, decoder, method, count):
-        '''Loop over decoder entries
-        '''
-        data = [decoder.method() for i in range(count)]
-        return data
-
 class Sunnyboy5000TL21(SMA_Modbus):
     '''class for the connection to the SMA SynnyBoy-5000TL-21 by Modbus.
     Make sure the python lib 'pymodbus' is installed
