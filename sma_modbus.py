@@ -5,7 +5,7 @@ from cSMA_Modbus import Sunnyboy5000TL21 as sunny_boy
 
 # Main
 if __name__ == "__main__":
-    sunny_obj = sunny_boy("192.168.178.29")
+    sunny_obj = sunny_boy("192.168.xxx.xxx")
     sunny_obj.connect()
     print(f'Device class    : {sunny_obj.get_device_class()}')
     print(f'Serial Number   : {sunny_obj.get_serial_number()}')
