@@ -1,4 +1,4 @@
-# SMA_SunnyBoy-5000TL-21-Modbus
+# SMA-SunnyBoy-5000TL-21-Modbus
 Repository for the SMA Sunnyboy 5000TL-21.
 
 Lean python solution for connecting your device with the SunnyBoy via python.
