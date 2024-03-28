@@ -22,7 +22,7 @@ Python solution to connect to the SMA Sunnyboy-5000TL-21.
 Check the python code in the script `sma_modbus.py` and change the settings if necessary.
 Then you can check the communucation via:
 
-`python3 sma_modbuy.py`
+`python3 sma_modbus.py`
 
 # License
 This library is licensed under MIT Licence.
