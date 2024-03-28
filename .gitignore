@@ -1,5 +1,7 @@
 # ignore specific files
 sma_modbus_2mariaDB.py
+# ignore log files
+*log.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
