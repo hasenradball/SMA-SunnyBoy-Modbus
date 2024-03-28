@@ -1,9 +1,10 @@
-#!/usr/bin/python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 from pymodbus.constants import Endian
 from pymodbus.payload import BinaryPayloadDecoder
 from pymodbus.client import ModbusTcpClient as ModBusClient
+from .Modbus_Constants import Modbus_Contants as CONSTS
 
 
 class SMA_Modbus:
@@ -49,8 +50,7 @@ class SMA_Modbus:
     def read_holding_register(self, register_address, datatype, count = 1):
         '''Read the holding register from SMA device
         '''
-        type_to_length = {'U16': 1, 'U32': 2, 'U64': 4, 'S16': 1, 'S32': 2 }
-        length = type_to_length[datatype] * count
+        length = CONSTS.TYPE_TO_LENGTH[datatype] * count
         #print(f'length : {length}')
         result = self._client.read_holding_registers(register_address, length, slave=self._device_unit_id)
         #print(type(result.registers), ": ", result.registers)
