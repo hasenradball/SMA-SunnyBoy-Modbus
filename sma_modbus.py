@@ -1,12 +1,15 @@
+'''Script for connect to the SMA SunnyBoy inverter'''
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import time
 from cSMA_Modbus import Sunnyboy5000TL21 as sunny_boy
 
 # Main
 if __name__ == "__main__":
+    tic = time.perf_counter()
     sunny_obj = sunny_boy("192.168.178.29")
     sunny_obj.connect()
+    print("SMA SunnyBoy Test\n")
     print(f'Device class    : {sunny_obj.get_device_class()}')
     print(f'Serial Number   : {sunny_obj.get_serial_number()}')
     print(f'Software Packet : {sunny_obj.get_software_packet()}')
@@ -28,6 +31,5 @@ if __name__ == "__main__":
     print(f'Active Power : {sunny_obj.get_active_power()} kW')
     print(f'AC Current   : {sunny_obj.get_ac_current()} A')
     sunny_obj.close()
-    print ("\n")
-    print("INFO: test finished!")
-    
+    toc = time.perf_counter()
+    print(f'INFO: test finished in {toc-tic:.3f} s')

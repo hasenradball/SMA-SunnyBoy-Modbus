@@ -1,10 +1,11 @@
-#!/usr/bin/env python
+'''Class for SMA Modbus Connection'''
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 from pymodbus.constants import Endian
 from pymodbus.payload import BinaryPayloadDecoder
 from pymodbus.client import ModbusTcpClient as ModBusClient
-from .Modbus_Constants import Modbus_Contants as CONSTS
+from .Modbus_Constants import ModbusConstants as CONSTS
 
 
 class SMA_Modbus:
@@ -52,7 +53,8 @@ class SMA_Modbus:
         '''
         length = CONSTS.TYPE_TO_LENGTH[datatype] * count
         #print(f'length : {length}')
-        result = self._client.read_holding_registers(register_address, length, slave=self._device_unit_id)
+        result = self._client.read_holding_registers(register_address, \
+                length, slave=self._device_unit_id)
         #print(type(result.registers), ": ", result.registers)
         data = self.decode_register_readings(result, datatype, count)
         return data
@@ -60,18 +62,25 @@ class SMA_Modbus:
     def decode_register_readings(self, readings, datatype, count):
         '''Decode the register readings dependend on datatype
         '''
-        decoder = BinaryPayloadDecoder.fromRegisters(readings.registers, byteorder=Endian.BIG, wordorder=Endian.BIG)
+        decoder = BinaryPayloadDecoder.fromRegisters(readings.registers, \
+                byteorder=Endian.BIG, wordorder=Endian.BIG)
         #print(f'decoder : {decoder}')
-        if (datatype == 'U16'):
+        if datatype == 'U8':
+            data = [decoder.decode_8bit_uint() for i in range(count)]
+        elif datatype == 'U16':
             data = [decoder.decode_16bit_uint() for i in range(count)]
-        elif (datatype == 'U32'):
+        elif datatype == 'U32':
             data = [decoder.decode_32bit_uint() for i in range(count)]
-        elif (datatype == 'U64'):
+        elif datatype == 'U64':
             data = [decoder.decode_64bit_uint() for i in range(count)]
-        elif (datatype == 'S16'):
+        elif datatype == 'S8':
             data = [decoder.decode_16bit_int() for i in range(count)]
-        elif (datatype == 'S32'):
+        elif datatype == 'S16':
+            data = [decoder.decode_8bit_int() for i in range(count)]
+        elif datatype == 'S32':
             data = [decoder.decode_32bit_int() for i in range(count)]
+        elif datatype == 'S64':
+            data = [decoder.decode_64bit_int() for i in range(count)]
         return data
 
 class Sunnyboy5000TL21(SMA_Modbus):
@@ -107,9 +116,9 @@ class Sunnyboy5000TL21(SMA_Modbus):
                        9165: 'SB 3600TL-21'}
         # read device type of default unit id = 3
         data = self.read_holding_register(30053, 'U32')
-        Device_Type = device_type[data[0]]
+        device = device_type[data[0]]
         #print("Device Type: ", Device_Type)
-        return Device_Type
+        return device
 
     def get_serial_number(self):
         '''Query serial number at register = 30057, U32
@@ -118,7 +127,7 @@ class Sunnyboy5000TL21(SMA_Modbus):
         data = self.read_holding_register(30057, 'U32')
         #print("Serial#: ", data)
         return data[0]
-    
+
     def get_software_packet(self):
         '''Get Software Packet at register = 30059;  U32
         '''
@@ -131,9 +140,9 @@ class Sunnyboy5000TL21(SMA_Modbus):
         # read Status of device
         device_status = {35: 'Fehler', 303: 'Aus', 307: 'Ok', 455: 'Warnung'}
         data = self.read_holding_register(30201, 'U32')
-        Status = device_status[data[0]]
+        status = device_status[data[0]]
         #print('Status: ', Status)
-        return Status
+        return status
 
     def get_grid_relay_status(self):
         '''Derating status of the grid relay/contact at register = 30217; U32
@@ -193,30 +202,30 @@ class Sunnyboy5000TL21(SMA_Modbus):
         '''
         dc_current = self.read_holding_register(30769, 'S32')[0]
         #print(dc_current)
-        if (dc_current < 0):
+        if dc_current < 0:
             dc_current = 0
         return dc_current
-    
+
     def get_dc_voltage_in(self):
         '''Get dc voltage incomming at register = 30771; S32
             DC voltage in V
         '''
         dc_voltage = self.read_holding_register(30769, 'S32')[0]
         #print(dc_voltage)
-        if (dc_voltage < 0):
+        if dc_voltage < 0:
             dc_voltage = 0
         return dc_voltage
-    
+
     def get_dc_power_in(self):
         '''Get dc power incomming at register = 30773; S32
             DC power in W
         '''
         dc_power = self.read_holding_register(30773, 'S32')[0]
         #print(data[0])
-        if (dc_power < 0):
+        if dc_power < 0:
             dc_power = 0
         return dc_power
-    
+
     def get_active_power(self):
         '''Getter for the active power of L1, L2, L3
         query Active Power of all at register = 30775, S32
@@ -226,23 +235,23 @@ class Sunnyboy5000TL21(SMA_Modbus):
         '''
         data = self.read_holding_register(30775, 'S32', 4)
         #print(type(result.registers), ": ", result.registers)
-        P_sum = data[0] / 1000
-        if (P_sum < 0):
-            P_sum = 0
-        P_L1 = data[1]  / 1000
-        if (P_L1 < 0):
-            P_L1 = 0
-        P_L2 = data[2]  / 1000
-        if (P_L2 < 0):
-            P_L2 = 0
-        P_L3 = data[3]  / 1000
-        if (P_L3 < 0):
-            P_L3 = 0
+        p_sum = data[0] / 1000
+        if p_sum < 0:
+            p_sum = 0
+        p_L1 = data[1]  / 1000
+        if p_L1 < 0:
+            p_L1 = 0
+        p_L2 = data[2]  / 1000
+        if p_L2 < 0:
+            p_L2 = 0
+        p_L3 = data[3]  / 1000
+        if p_L3 < 0:
+            p_L3 = 0
         #print('Aktive Wirkleistung Summe: ', P_sum, " kW")
-        #print('Aktive Wirkleistung L1:\t\t', P_L1, " kW")
-        #print('Aktive Wirkleistung L2:\t\t', P_L2, " kW")
-        #print('Aktive Wirkleistung L3:\t\t', P_L3, " kW")
-        return round(P_sum, 3)
+        #print('Aktive Wirkleistung L1:\t\t', p_L1, " kW")
+        #print('Aktive Wirkleistung L2:\t\t', p_L2, " kW")
+        #print('Aktive Wirkleistung L3:\t\t', p_L3, " kW")
+        return round(p_sum, 3)
 
     def get_ac_current(self):
         '''Getter for the actual current of i1, i2, i3
@@ -252,16 +261,16 @@ class Sunnyboy5000TL21(SMA_Modbus):
         '''
         # read_holding_registers(Startwert, Anzahl Register, slave=self._device_unit_id)
         data = self.read_holding_register(30977, 'S32', 3)
-        I_AC_L1 = data[0] / 1000
-        if (I_AC_L1 < 0):
-            I_AC_L1 = 0
-        I_AC_L2 = data[1] / 1000
-        if (I_AC_L2 < 0):
-            I_AC_L2 = 0
-        I_AC_L3 = data[2] / 1000
-        if (I_AC_L3 < 0):
-            I_AC_L3 = 0
-        #print('AC Strom  L1:\t\t{0:.3f} A'.format(I_AC_L1))
-        #print('AC Strom  L2:\t\t{0:.3f} A'.format(I_AC_L2))
-        #print('AC Strom  L3:\t\t{0:.3f} A'.format(I_AC_L3))
-        return round(I_AC_L1, 3)
+        i_ac_L1 = data[0] / 1000
+        if i_ac_L1 < 0:
+            i_ac_L1 = 0
+        i_ac_L2 = data[1] / 1000
+        if i_ac_L2 < 0:
+            i_ac_L2 = 0
+        i_ac_L3 = data[2] / 1000
+        if i_ac_L3 < 0:
+            i_ac_L3 = 0
+        #print('AC Strom  L1:\t\t{0:.3f} A'.format(i_ac_L1))
+        #print('AC Strom  L2:\t\t{0:.3f} A'.format(i_ac_L2))
+        #print('AC Strom  L3:\t\t{0:.3f} A'.format(i_ac_L3))
+        return round(i_ac_L1, 3)

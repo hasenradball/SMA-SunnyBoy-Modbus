@@ -1,5 +1,6 @@
 # ignore specific files
 sma_modbus_2mariaDB.py
+mariadb_config.py
 # ignore log files
 *log.txt
 
