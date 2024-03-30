@@ -15,7 +15,7 @@ Python solution connecting the SMA Sunnyboy inverters.
     python3 -m pip install pymodbus<br>
     python3 -m pip install pyserial
     
-    Remark: use the minimum the version of 3.6.x
+    Remark: for `pymodbus` use the minimum version of 3.6.x
 
 2) make sure that your SMA Device supports the modbus protocol
 3) make sure that the SMA Device has started/enabled the TCP Server to communicate via modbus
@@ -30,7 +30,7 @@ Alternativly you can instanciate the object with the device UnitID by:
 
     sunny_obj = sunny_boy("192.168.xxx.xxx", UnitID)
 
-Normally the device UnitID is `3` as default. If not sure you can use the use the funtion `read_device_unit_id()`.
+Normally the device UnitID is `3` as default. If not sure you can use the funtion `read_device_unit_id()`.
 
     sunny_obj = sunny_boy("192.168.178.29")
     print(sunny_obj.read_device_unit_id())
