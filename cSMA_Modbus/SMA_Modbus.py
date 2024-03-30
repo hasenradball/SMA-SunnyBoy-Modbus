@@ -105,12 +105,11 @@ class SMA_Modbus:
             data = [decoder.decode_64bit_int() for i in range(count)]
         return data
 
-class Sunnyboy5000TL21(SMA_Modbus):
-    '''class for the connection to the SMA SynnyBoy-5000TL-21 by Modbus.
+class SunnyBoy(SMA_Modbus):
+    '''class for the connection to the SMA SunnyBoy by Modbus.
     Make sure the python lib 'pymodbus' is installed
     Please check if the TCP port in the sma device is activated!
-    Check Register description --> see specific documentation of manufacturer
-    e.g.: http://read.pudn.com/downloads781/ebook/3090423/SMA_Modbus-de-en_V15/SMA_Modbus-TI-de-15.pdf 
+    Check Register description --> see specific documentation of manufacturer 
     '''
 
     def get_device_class(self):

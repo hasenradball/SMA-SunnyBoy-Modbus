@@ -2,7 +2,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import time
-from cSMA_Modbus import Sunnyboy5000TL21 as sunny_boy
+from cSMA_Modbus import SunnyBoy as sunny_boy
 
 # Main
 if __name__ == "__main__":
