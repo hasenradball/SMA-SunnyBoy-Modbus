@@ -38,7 +38,7 @@ sunny_obj = sunny_boy("192.168.xxx.xxx")
 ```
 ### Check the UnitID
 ```
-sunny_obj = sunny_boy("192.168.178.29")
+sunny_obj = sunny_boy("192.168.xxx.xxx")
 print(sunny_obj.read_device_unit_id())
 ```
 
