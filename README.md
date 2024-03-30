@@ -1,7 +1,7 @@
-# SMA_SunnyBoy-5000TL-21-Modbus
-Repository for the SMA Sunnyboy 5000TL-21.
+# SMA-SunnyBoy-5000TL-21-Modbus
+Python solution connecting the SMA Sunnyboy inverters.
 
-Lean python solution for connecting your device with the SunnyBoy via python.
+![SMA-SunnyBoy](./docs/SMA/SMA-SunnyBoy.jpg)
 
 ## Contents
 * [Prerecquisites](#prerecquisites)
@@ -12,8 +12,8 @@ Lean python solution for connecting your device with the SunnyBoy via python.
 ## Prerecquisites
 1) For the use of this python code it is necessary to install the python libs `pymodbus` and `pyserial`:
 
-    `python3 -m pip install pymodbus`
-    `python3 -m pip install pyserial`
+    python3 -m pip install pymodbus<br>
+    python3 -m pip install pyserial
     
     Remark: use the minimum the version of 3.6.x
 
@@ -22,9 +22,22 @@ Lean python solution for connecting your device with the SunnyBoy via python.
 
 ## Usage
 Check the python code in the script `sma_modbus.py` and change the settings if necessary.
+Especially the ip-address has to be adapted to your settings in the following line:
+    
+     sunny_obj = sunny_boy("192.168.xxx.xxx")
+
+Alternativly you can instanciate the object with the device UnitID by:
+
+    sunny_obj = sunny_boy("192.168.xxx.xxx", UnitID)
+
+Normally the device UnitID is `3` as default. If not sure you can use the use the funtion `read_device_unit_id()`.
+
+    sunny_obj = sunny_boy("192.168.178.29")
+    print(sunny_obj.read_device_unit_id())
+
 Then you can check the communucation via:
 
-`python3 sma_modbuy.py`
+    python3 sma_modbus.py
 
 # License
 This library is licensed under MIT Licence.
