@@ -1,5 +1,5 @@
 # SMA-SunnyBoy-5000TL-21-Modbus
-Python solution connecting the SMA Sunnyboy-5000TL-21.
+Python solution connecting the SMA Sunnyboy inverters.
 
 ![SMA-SunnyBoy](./docs/SMA/SMA-SunnyBoy.jpg)
 
