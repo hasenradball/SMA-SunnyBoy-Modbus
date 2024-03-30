@@ -13,7 +13,7 @@ Python solution connecting the SMA Sunnyboy inverters.
 1) For the use of this python code it is necessary to install the python libs `pymodbus` and `pyserial`:
 
 ```
-python3 -m pip install pymodbus<br>
+python3 -m pip install pymodbus
 python3 -m pip install pyserial
 ```
     
