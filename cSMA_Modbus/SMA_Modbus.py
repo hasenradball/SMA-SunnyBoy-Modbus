@@ -105,8 +105,10 @@ class SMA_Modbus:
             data = [decoder.decode_64bit_int() for i in range(count)]
         return data
 
+
 class SunnyBoy(SMA_Modbus):
     '''class for the connection to the SMA SunnyBoy by Modbus.
+    
     Make sure the python lib 'pymodbus' is installed
     Please check if the TCP port in the sma device is activated!
     Check Register description --> see specific documentation of manufacturer 
