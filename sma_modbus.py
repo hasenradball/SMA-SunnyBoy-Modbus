@@ -1,4 +1,4 @@
-'''Script for connect to the SMA SunnyBoy inverter'''
+"""Script for connect to the SMA SunnyBoy inverter"""
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import time
