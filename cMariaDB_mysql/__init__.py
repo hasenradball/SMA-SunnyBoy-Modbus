@@ -92,7 +92,7 @@ class cMariaDB_mysql:
             cursor = self.connector.cursor()
             # INSERT INTO `waermepumpe`.`energie` (E_import_tot, E_export_tot) VALUES(20.9, 31.4)
             query_str = f"INSERT INTO `{self._config['database']}`.`{table}` ({columns}) VALUES({str(values)})"
-            print(query_str)
+            #print(query_str)
             cursor.execute(query_str)
             self.connector.commit()
         except mysql.connector.Error as err:
