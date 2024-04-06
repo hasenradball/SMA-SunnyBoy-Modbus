@@ -311,7 +311,7 @@ class SunnyBoy(SMA_Modbus):
         Active Power of L3 phase
         Register: 30781, S32
         ----
-        Unit: W
+        Unit: kW
         """
         data = self.read_holding_register(30775, 'S32', 4)
         #print(type(result.registers), ": ", result.registers)
