@@ -4,9 +4,9 @@
 
 import mysql.connector
 from mysql.connector import errorcode
-from cSMA_Modbus import SunnyBoy as sunny_boy
+from sma_modbus import SunnyBoy as sunny_boy
 from mariadb_config import MARIA_DB_CONFIG
-from cMariaDB_mysql import cMariaDB_mysql as maria_db
+from maria_db_mysql import MariaDBMysql as maria_db
 
 # Main
 if __name__ == "__main__":

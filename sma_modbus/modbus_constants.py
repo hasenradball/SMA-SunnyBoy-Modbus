@@ -1,4 +1,4 @@
-"""Modbus Constants"""
+"""module to prvide modbus constants"""
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 

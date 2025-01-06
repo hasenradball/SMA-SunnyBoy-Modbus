@@ -5,10 +5,11 @@
 from pymodbus.constants import Endian
 from pymodbus.payload import BinaryPayloadDecoder
 from pymodbus.client import ModbusTcpClient as ModBusClient
-from .Modbus_Constants import ModbusConstants as CONSTS
+from pymodbus import (ExceptionResponse, ModbusException)
+from .modbus_constants import ModbusConstants as CONSTS
 
 
-class SMA_Modbus:
+class SmaModbus:
     """Base class for SMA Modbeus with TCP
     """
     def __init__(self, ip, port = 502, device_unit_id = 3):
@@ -66,8 +67,8 @@ class SMA_Modbus:
             else:
                 #print("INFO: client connected successfully to Modbus-Server!")
                 pass
-        except:
-            print("ERROR: Propably an Syntax Error!")
+        except Exception as exc:
+            print(f"ERROR: received an exception {exc}! Propably an Syntax Error!")
         finally:
             pass
 
@@ -95,8 +96,18 @@ class SMA_Modbus:
         """
         length = CONSTS.TYPE_TO_LENGTH[datatype] * count
         #print(f'length : {length}')
-        result = self._client.read_holding_registers(register_address, \
+        try:
+            result = self._client.read_holding_registers(register_address, \
                 length, slave=self._device_unit_id)
+            #print(result, type(result))
+        except ModbusException as exc:
+            print(f">>> read_holding_register: Received ModbusException({exc}) from library")
+        if result.isError():
+            print(f">>> read_holding_register: Received Modbus library error({result})")
+        if isinstance(result, ExceptionResponse):
+            print(f">>> read_holding_register: Received Modbus library exception ({result})")
+            # THIS IS NOT A PYTHON EXCEPTION, but a valid modbus message
+            return False
         #print(type(result.registers), ": ", result.registers)
         data = self.decode_register_readings(result, datatype, count)
         return data
@@ -117,6 +128,7 @@ class SMA_Modbus:
         decoder = BinaryPayloadDecoder.fromRegisters(readings.registers, \
                 byteorder=Endian.BIG, wordorder=Endian.BIG)
         #print(f'decoder : {decoder}')
+        data = []
         if datatype == 'U8':
             data = [decoder.decode_8bit_uint() for i in range(count)]
         elif datatype == 'U16':
@@ -136,7 +148,7 @@ class SMA_Modbus:
         return data
 
 
-class SunnyBoy(SMA_Modbus):
+class SunnyBoy(SmaModbus):
     """class for the connection to the SMA SunnyBoy by Modbus.
     
     Make sure the python lib 'pymodbus' is installed
@@ -147,7 +159,13 @@ class SunnyBoy(SMA_Modbus):
     def get_device_class(self):
         """Read the device class
         
-        Register: 30051, U32
+        -----
+        Returns:
+            device class if successful, False otherwise
+        -----
+        Register address: 30051; U32
+        Function-Code: 0x04
+        Unit: -
         """
         data = self.read_holding_register(30051, 'U32')
         class_of_device = CONSTS.DEVICE_CLASS[data[0]]
@@ -157,7 +175,13 @@ class SunnyBoy(SMA_Modbus):
     def get_device_type(self):
         """Read the device type
         
-        Register: 30053, U32
+        -----
+        Returns:
+            device type if successful, False otherwise
+        -----
+        Register address: 30053; U32
+        Function-Code: 0x04
+        Unit: -
         """
 
         # read device type of default unit id = 3
@@ -169,7 +193,13 @@ class SunnyBoy(SMA_Modbus):
     def get_serial_number(self):
         """Read the serial number
         
-        Register: 30057, U32
+        -----
+        Returns:
+            serial number if successful, False otherwise
+        -----
+        Register address: 30057; U32
+        Function-Code: 0x04
+        Unit: -
         """
         # read serial number of deafult unit id = 3
         data = self.read_holding_register(30057, 'U32')
@@ -179,7 +209,13 @@ class SunnyBoy(SMA_Modbus):
     def get_software_packet(self):
         """Read the software packet information
         
-        Register: 30059;  U32
+        -----
+        Returns:
+            sofware packet information if successful, False otherwise
+        -----
+        Register address: 30059; U32
+        Function-Code: 0x04
+        Unit: -
         """
         data = self.read_holding_register(30059, 'U32')[0]
         return data
@@ -187,7 +223,13 @@ class SunnyBoy(SMA_Modbus):
     def get_status_of_device(self):
         """Read the device status
         
-        Register: 30201, U32
+        -----
+        Returns:
+            status of device if successful, False otherwise
+        -----
+        Register address: 30201; U32
+        Function-Code: 0x04
+        Unit: -
         """
         data = self.read_holding_register(30201, 'U32')[0]
         status = CONSTS.DEVICE_STATUS[data]
@@ -198,8 +240,14 @@ class SunnyBoy(SMA_Modbus):
         """Read the status of the grid relay/contact
         
         Register: 30217; U32
+        -----
+        Returns:
+            status of grid contact if successful, False otherwise
+        -----
+        Register address: 30217; U32
+        Function-Code: 0x04
+        Unit: -
         """
-
         data = self.read_holding_register(30217, 'U32')[0]
         #print(data[0])
         return CONSTS.RELAY_STATE[data]
@@ -208,6 +256,13 @@ class SunnyBoy(SMA_Modbus):
         """Read the derating state of the device 
         
         Register: 30219; U32
+        -----
+        Returns:
+            derating state if successful, False otherwise
+        -----
+        Register address: 30219; U32
+        Function-Code: 0x04
+        Unit: -
         """
         data = self.read_holding_register(30219, 'U32')[0]
         #print(data[0])
@@ -216,8 +271,13 @@ class SunnyBoy(SMA_Modbus):
     def get_total_yield(self):
         """Read the total yield
         
-        Total yield
-        Register: 30513; U64
+        get the total yield in Wh
+        -----
+        Returns:
+            total yield if successful, False otherwise
+        -----
+        Register address: 30513; U64
+        Function-Code: 0x04
         Unit: Wh
         """
         data = self.read_holding_register(30513, 'U64')
@@ -227,8 +287,13 @@ class SunnyBoy(SMA_Modbus):
     def get_daily_yield(self):
         """Read the daily yield
         
-        Total yield
-        Register: 30517; U64
+        get daily yield in Wh
+        -----
+        Returns:
+            daily yield if successful, False otherwise
+        -----
+        Register address: 30517; U64
+        Function-Code: 0x04
         Unit: Wh
         """
         data = self.read_holding_register(30517, 'U64')[0]
@@ -238,8 +303,13 @@ class SunnyBoy(SMA_Modbus):
     def get_operating_time(self):
         """Read the operating time
         
-        Operating time
-        Register: 30521; U64
+        get the operating time in seconds
+        -----
+        Returns:
+            time in seconds if successful, False otherwise
+        -----
+        Register address: 30521; U64
+        Function-Code: 0x04
         Unit: s
         """
         time = self.read_holding_register(30521, 'U64')[0]
@@ -249,8 +319,13 @@ class SunnyBoy(SMA_Modbus):
     def get_feed_in_time(self):
         """Read the feed-in time
         
-        feed-in time
-        Register: 30525; U64
+        get the feed in time in seconds
+        -----
+        Returns:
+            feed in time in seconds if successful, False otherwise
+        -----
+        Register address: 30525; U64
+        Function-Code: 0x04
         Unit: s
         """
         time = self.read_holding_register(30525, 'U64')[0]
@@ -260,8 +335,13 @@ class SunnyBoy(SMA_Modbus):
     def get_dc_current_in(self):
         """Read the incomming dc current
         
-        DC current incomming
-        Register: 30769; S32
+        get DC current incomming
+        -----
+        Returns:
+            dc current if successful, False otherwise
+        -----
+        Register address: 30769; S32
+        Function-Code: 0x04
         Unit: A
         """
         dc_current = self.read_holding_register(30769, 'S32')[0]/1000
@@ -273,8 +353,13 @@ class SunnyBoy(SMA_Modbus):
     def get_dc_voltage_in(self):
         """Read the incommng dc voltage incomming
         
-        DC voltage incomming
-        Register: 30771; S32
+        get DC voltage incomming
+        -----
+        Returns:
+            DC voltage if successful, False otherwise
+        -----
+        Register address: 30771; S32
+        Function-Code: 0x04
         Unit: V
         """
         dc_voltage = self.read_holding_register(30771, 'S32')[0]/100
@@ -286,8 +371,13 @@ class SunnyBoy(SMA_Modbus):
     def get_dc_power_in(self):
         """Read the incomming dc power incomming
             
-        DC power incomming
-        Register: 30773; S32
+        get the DC power incomming
+        -----
+        Returns:
+            dc power if successful, False otherwise
+        -----
+        Register address: 30773; S32
+        Function-Code: 0x04
         Unit: W
         """
         dc_power = self.read_holding_register(30773, 'S32')[0]
@@ -300,16 +390,16 @@ class SunnyBoy(SMA_Modbus):
         """Read the active power of phases L1, L2, L3
 
         Active Power of all phases
-        Register: 30775, S32
+        Register: 30775; S32
         ----
         Active Power of L1 phase
-        Register: 30777, S32
+        Register: 30777; S32
         ----
         Active Power of L2 phase
-        Register: 30779, S32
+        Register: 30779; S32
         ----
         Active Power of L3 phase
-        Register: 30781, S32
+        Register: 30781; S32
         ----
         Unit: kW
         """
@@ -337,13 +427,13 @@ class SunnyBoy(SMA_Modbus):
         """Read the actual current of phases i1, i2, i3
         
         AC Current of L1
-        Register: 30977, S32
+        Register: 30977; S32
         ----
         AC Current of L2
-        Register: 30979, S32
+        Register: 30979; S32
         ----
         AC Current of L3
-        Register: 30981, S32
+        Register: 30981; S32
         ----
         Unit: A
         """
