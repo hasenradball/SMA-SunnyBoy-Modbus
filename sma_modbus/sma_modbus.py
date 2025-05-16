@@ -11,7 +11,7 @@ class SmaModbus:
     """Base class for SMA Modbeus with TCP
     """
     def __init__(self, ip, port = 502, device_unit_id = 3):
-        """Constuctor of modbus object
+        """Constructor of modbus object
         
         Keyword arguments:
 
@@ -50,7 +50,7 @@ class SmaModbus:
         return unit_id
 
     def connect(self):
-        """Establish conncetion of client
+        """Establish connection of client
         """
         try:
             if not self._client.connect():
@@ -59,7 +59,7 @@ class SmaModbus:
                 #print("INFO: client connected successfully to Modbus-Server!")
                 pass
         except Exception as exc:
-            print(f"ERROR: received an exception {exc}! Propably an Syntax Error!")
+            print(f"ERROR: received an exception {exc}! Probably an Syntax Error!")
         finally:
             pass
 
@@ -104,7 +104,7 @@ class SmaModbus:
         return data
 
     def decode_register_readings(self, readings, datatype, count):
-        """Decode the register readings dependend on datatype
+        """Decode the register readings depend on datatype
 
         Keyword arguments:
 
@@ -185,7 +185,7 @@ class SunnyBoy(SmaModbus):
         Function-Code: 0x04
         Unit: -
         """
-        # read serial number of deafult unit id = 3
+        # read serial number of default unit id = 3
         data = self.read_holding_register(30057, 'U32')
         #print("Serial#: ", data)
         return data
@@ -195,7 +195,7 @@ class SunnyBoy(SmaModbus):
         
         -----
         Returns:
-            sofware packet information if successful, False otherwise
+            software packet information if successful, False otherwise
         -----
         Register address: 30059; U32
         Function-Code: 0x04
@@ -317,9 +317,9 @@ class SunnyBoy(SmaModbus):
         return time
 
     def get_dc_current_in(self) -> float:
-        """Read the incomming dc current
+        """Read the incoming dc current
         
-        get DC current incomming
+        get DC current incoming
         -----
         Returns:
             dc current if successful, False otherwise

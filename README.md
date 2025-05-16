@@ -65,7 +65,7 @@ Especially the `ip-address` has to be adapted to your settings in the following 
 ```
 sunny_obj = sunny_boy("192.168.xxx.xxx", UnitID)
 ```
-The device UnitID has the value  `3` as default. If you are not sure you can use the funtion `read_device_unit_id()` to check.<br>
+The device UnitID has the value  `3` as default. If you are not sure you can use the function `read_device_unit_id()` to check.<br>
 The UnitID can be set to values of `3...123`, the values `1` and `2` are reserved.<br>
 
 Thus the constructor has a default parameter for the UnitID = 3, the instanciation can also be done like:
