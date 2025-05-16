@@ -28,7 +28,7 @@ python -m venv ~/my_python_venvs
 ```
 2. Install the needed python packages
 
-> the pymodbus Documentation you will find here:<br>
+> the pymodbus documentation you will find here:<br>
 [https://pymodbus.readthedocs.io/en/v3.9.2/](https://pymodbus.readthedocs.io/en/v3.9.2/)
 
 ```
