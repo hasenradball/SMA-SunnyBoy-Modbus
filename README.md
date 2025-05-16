@@ -5,7 +5,9 @@ Python solution connecting the SMA Sunnyboy inverters.
 
 ## Contents
 * [Prerecquisites](#prerecquisites)
-* [Usage](#usage)
+* [Installation Steps](#installation-steps)
+* [Library Installation](#library-installation)
+* [Library Usage](#library-usage)
 * [License](#license)
 * [Helpful Links](#helpful-links)
 
