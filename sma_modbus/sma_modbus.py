@@ -335,9 +335,9 @@ class SunnyBoy(SmaModbus):
         return dc_current
 
     def get_dc_voltage_in(self) -> float:
-        """Read the incommng dc voltage
+        """Read the incoming dc voltage
         
-        get DC voltage incomming
+        get DC voltage incoming
         -----
         Returns:
             DC voltage if successful, False otherwise
@@ -353,9 +353,9 @@ class SunnyBoy(SmaModbus):
         return dc_voltage
 
     def get_dc_power_in(self):
-        """Read the incomming dc power
+        """Read the incoming dc power
             
-        get the DC power incomming
+        get the DC power incoming
         -----
         Returns:
             dc power if successful, False otherwise
