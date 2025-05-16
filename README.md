@@ -1,4 +1,6 @@
 # SMA-SunnyBoy-Modbus
+[![Spell Check](https://github.com/hasenradball/SMA-SunnyBoy-Modbus/actions/workflows/spell_checker.yml/badge.svg)](https://github.com/hasenradball/SMA-SunnyBoy-Modbus/actions/workflows/spell_checker.yml)
+
 Python solution connecting the SMA Sunnyboy inverters.
 
 ![SMA-SunnyBoy](./docs/SMA/SMA-SunnyBoy.jpg)
