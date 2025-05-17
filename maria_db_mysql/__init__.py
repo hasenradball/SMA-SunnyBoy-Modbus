@@ -8,7 +8,7 @@ class MariaDBMysql:
     """Class connecting MariaDB Database"""
 
     def __init__(self, config):
-        """Contructor of cMariaDB_mysql class 
+        """Constructor of MariaDBMysql class 
         -----
 
         Args:
@@ -19,7 +19,7 @@ class MariaDBMysql:
         self.connector = self.connect()
 
     def __del__(self):
-        #destoy the connector object
+        #destroy the connector object
         #print("Call destructor")
         self.connector.close()
 
@@ -51,7 +51,7 @@ class MariaDBMysql:
             return connector_obj
 
     def insert_by_stored_procedure(self, prodedure_name, arguments) -> bool:
-        """Insert data into mariaDB by calling a strored procedure
+        """Insert data into mariaDB by calling a stored procedure
         -----
 
         Args:
