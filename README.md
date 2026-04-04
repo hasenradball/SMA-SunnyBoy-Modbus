@@ -16,9 +16,9 @@ Python solution connecting the SMA Sunnyboy inverters.
 ## Prerecquisites
 1. For this library you need python3
 2. For the use of this python code it is necessary to install the python libs:
-    - `pymodbus v3.9.2`
+    - `pymodbus v3.12.1`
     - `pyserial`
-> Remark: for `pymodbus` use the minimum version of 3.9.x, testetd with pymodbus==3.9.2
+> Remark: for `pymodbus` use the minimum version of 3.12.x, testetd with pymodbus==3.12.1
 
 ## Installation steps
 ### Make python ready to use
@@ -31,10 +31,10 @@ python -m venv ~/my_python_venvs
 2. Install the needed python packages
 
 > the pymodbus documentation you will find here:<br>
-[https://pymodbus.readthedocs.io/en/v3.9.2/](https://pymodbus.readthedocs.io/en/v3.9.2/)
+[https://pymodbus.readthedocs.io/en/v3.12.1/](https://pymodbus.readthedocs.io/en/v3.12.1/)
 
 ```
-~/my_python_venvs/bin/python -m pip install pymodbus==3.9.2
+~/my_python_venvs/bin/python -m pip install pymodbus==3.12.1
 ~/my_python_venvs/bin/python -m pip install pyserial
 ```
 You can check the state by:
@@ -43,9 +43,7 @@ You can check the state by:
 ~/my_python_venvs/bin/python -m pip list
 ```
 
-
-
- ### Make your SMA Inverter ready to use
+### Make your SMA Inverter ready to use
 1. make sure that your SMA Device supports the modbus protocol
 2. make sure that the SMA Device has started/enabled the TCP Server to communicate via modbus
 
